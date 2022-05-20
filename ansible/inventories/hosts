@@ -1,0 +1,10 @@
+[redis_master]
+178.128.122.0 ansible_ssh_user=root
+
+[redis_slave]
+68.183.224.157 ansible_ssh_user=root
+128.199.64.44 ansible_ssh_user=root
+
+[redis_sentinal:children]
+redis_master
+redis_slave

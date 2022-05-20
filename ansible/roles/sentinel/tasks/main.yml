@@ -1,0 +1,23 @@
+- name: Wait
+  shell:
+    cmd: sleep 15
+  args:
+    executable: /bin/bash
+
+- name: Restart redis
+  shell:
+    cmd: systemctl restart redis-server
+  args:
+    executable: /bin/bash
+
+- name: Restart Redis Sentinel
+  shell:
+    cmd: systemctl restart redis-sentinel
+  args:
+    executable: /bin/bash
+
+- name: Replica Info
+  shell:
+    cmd: redis-cli info replication
+  args:
+    executable: /bin/bash

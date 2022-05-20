@@ -1,0 +1,25 @@
+- hosts: [all]
+  gather_facts: 'yes'
+  roles:
+    - common
+
+- hosts: [redis_master]
+  gather_facts: 'yes'
+  vars_files:
+    - "{{playbook_dir}}/vars/config.yml"
+  roles:
+    - master
+
+- hosts: [redis_slave]
+  gather_facts: 'yes'
+  vars_files:
+    - "{{playbook_dir}}/vars/config.yml"
+  roles:
+    - slave
+
+- hosts: [redis_sentinal]
+  gather_facts: 'yes'
+  vars_files:
+    - "{{playbook_dir}}/vars/config.yml"
+  roles:
+    - sentinel

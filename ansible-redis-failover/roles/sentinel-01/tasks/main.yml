@@ -1,8 +1,0 @@
-- name: 'mkdir {{dir}},if exist,do nothing'
-  file: 'path={{dir}} state=directory'
-- name: 'mkdir {{logfile}},if exist,do nothing'
-  file: 'path={{logfile}} state=directory'
-- name: copy sentinel.conf.j2
-  template: 'src=sentinel.conf.j2 dest=/usr/local/redis-{{ver}}/sentinel.conf'
-- name: start sentinel 
-  shell: 'nohup /usr/local/redis-{{ver}}/src/redis-sentinel /usr/local/redis-{{ver}}/sentinel.conf &'

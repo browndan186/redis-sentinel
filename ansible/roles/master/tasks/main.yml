@@ -1,0 +1,40 @@
+- name: Wait
+  shell:
+    cmd: sleep 0
+  args:
+    executable: /bin/bash
+
+- name: Update Redis Config
+  shell: |
+      systemctl restart redis-server
+      echo "config set \"bind\" \"0.0.0.0\" " | redis-cli
+      echo "config set \"protected-mode\" \"no\" " | redis-cli
+      echo "config rewrite" | redis-cli 
+      systemctl restart redis-server
+      netstat -tulpn | grep -i redis
+  args:
+    executable: /bin/bash
+
+- name: Add Sentinel Settings - Master
+  shell: |
+    systemctl stop redis-sentinel
+    echo 'protected-mode yes
+    port 26379
+    bind 0.0.0.0
+    sentinel down-after-milliseconds mymaster 5000
+    sentinel failover-timeout mymaster 60000
+    daemonize yes
+    supervised systemd
+    pidfile "/run/sentinel/redis-sentinel.pid"
+    logfile "/var/log/redis/redis-sentinel.log"
+    dir "/var/lib/redis"
+    sentinel monitor mymaster {{master_ip}} 6379 2
+    acllog-max-len 128
+    sentinel deny-scripts-reconfig yes
+    sentinel resolve-hostnames no
+    sentinel announce-hostnames no
+    #' > /etc/redis/sentinel.conf
+  args:
+    executable: /bin/bash
+    executable: /bin/bash
+
